@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>HEC AI Workloads Sample App</title>
+            <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only],
+.vscode-high-contrast:not(.vscode-high-contrast-light) img[src$=\#gh-light-mode-only],
+.vscode-high-contrast-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+            
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+<style>
+:root {
+  --color-note: #0969da;
+  --color-tip: #1a7f37;
+  --color-warning: #9a6700;
+  --color-severe: #bc4c00;
+  --color-caution: #d1242f;
+  --color-important: #8250df;
+}
+
+</style>
+<style>
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-note: #2f81f7;
+    --color-tip: #3fb950;
+    --color-warning: #d29922;
+    --color-severe: #db6d28;
+    --color-caution: #f85149;
+    --color-important: #a371f7;
+  }
+}
+
+</style>
+<style>
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 16px;
+  color: inherit;
+  border-left: .25em solid #888;
+}
+
+.markdown-alert>:first-child {
+  margin-top: 0
+}
+
+.markdown-alert>:last-child {
+  margin-bottom: 0
+}
+
+.markdown-alert .markdown-alert-title {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1
+}
+
+.markdown-alert .markdown-alert-title .octicon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  overflow: visible !important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-tip {
+  border-left-color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title {
+  color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: var(--color-caution);
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: var(--color-caution);
+}
+
+</style>
+        
+        </head>
+        <body class="vscode-body vscode-light">
+            <h1 id="hec-ai-workloads-sample-app">HEC AI Workloads Sample App</h1>
+<p>A comprehensive and optimization considered video analysis and text summarization sample application with camera and desktop video feeds VLM analysis, LLM-based meeting and class transcription analysis and summarization, integrates a virtual camera with features like auto framing, emotion recognition based on pipeline of multiple traditional CV algorithms.</p>
+<p>This sample application can be used as a tool to simulate end to end multiple vertical use cases, now video collaboration workloads have been validated many times, other vercial use cases can also leverage this tool because it is more about models selection and prompt engineering. it can help us in engagement with our cusotmer to showcase the capacities of the selected IA SKU for design win, to introduce new AI use cases, and to be a candidate of reference implementation for our partners' AI application development on IA platform after required process accompolished.</p>
+<h2 id="ui-of-the-application">UI of the application:</h2>
+<p><img src="https://intel.sharepoint.com/:i:/s/IOTGRBHEChina/ETIEtZcGV1pCiGKC9eeQoywB_7hcoDudYt0fcKuHjBxoEw?e=Lp9qt7" alt="Application Screenshot"></p>
+<h2 id="demostration-videos">Demostration Videos:</h2>
+<p><img src="https://intel.sharepoint.com/:f:/s/IOTGRBHEChina/EncKyK_MmTlMjrVVAZhnykEBAAlefqGgP7Q6IqQ4ZN_G2A?e=77WBlT" alt="Demo Videos"></p>
+<h3 id="1-meeting-transcription-summarization">1. Meeting Transcription Summarization:</h3>
+<h3 id="2-behavior-analysis-on-video-conferencing-attendee">2. Behavior Analysis on Video Conferencing Attendee:</h3>
+<h3 id="3-student-counting-in-classroom">3. Student Counting in Classroom:</h3>
+<h3 id="4-complicated-workloads-emotiona-analysis--auto-framing--vlm-inferencing-on-content-screen--4k-video-playing--web-browsing">4. Complicated Workloads (Emotiona Analysis + Auto Framing + VLM Inferencing on Content Screen + 4K Video Playing + Web Browsing):</h3>
+<h3 id="5-object-movement-analysis">5. Object Movement Analysis:</h3>
+<h3 id="6-object-detection">6. Object Detection:</h3>
+<h3 id="7-video-conferencing-sharing-content-analysis">7. Video Conferencing Sharing Content Analysis</h3>
+<h2 id="performance-result">Performance Result</h2>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>ADL-225H</th>
+<th>MTL-125H</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Qwen2.5-VL-3B</td>
+<td>3ms/token</td>
+<td>6.4ms/token</td>
+</tr>
+<tr>
+<td>Qwen3-1.7B</td>
+<td>15ms/token</td>
+<td>20ms/token</td>
+</tr>
+</tbody>
+</table>
+<h2 id="use-cases">Use Cases</h2>
+<h3 id="1-a-tool-to-simulate-end-to-end-workload-with-multiple-ai-features-to-showcase-ia-skus-capaciies">1. A tool to simulate end to end workload with multiple AI features to showcase IA SKUs capaciies.</h3>
+<ul>
+<li>The tool supports to load different models and quantization settings, and key performance metrics along with inferencing result.</li>
+</ul>
+<h3 id="2-a-tool-to-test-various-models-and-to-do-prompt-engineering-for-vertical-use-cases">2. A tool to test various models and to do prompt engineering for vertical use cases.</h3>
+<ul>
+<li>It supports to load different size and quantization models, vertical customer facing engineer or customer can use it to test different models, to write vertical use case relevant prompts and validate the result directly in the tool.</li>
+</ul>
+<h3 id="3-a-reference-implementation-for-application-development">3. A reference implementation for application development.</h3>
+<ul>
+<li>The pipeline design and application level optimization can be referred by ISVs during their application development.</li>
+</ul>
+<h2 id="features">Features</h2>
+<h3 id="video-processing">Video Processing</h3>
+<ul>
+<li>Qwen3 VLMs inferencing support for both camera feeds and desktop sharing feeds (New model will be added)</li>
+<li>Qwen3 LLM inferencing support for meeting transcript summarization (New model will be added)</li>
+<li>Real-time face and person detection using OpenVINO optimized traditional CV models</li>
+<li>Emotion recognition with 5 different emotion categories</li>
+<li>Auto Framing and emotion recognition features in virtual camera</li>
+<li>Multiple desktop screen capture and VLM analysis on captured video</li>
+<li>Multiple camera selection and VLM analysis on captured video</li>
+<li>Video file, camera and desktop capturing input support</li>
+</ul>
+<h3 id="optimized-performance">Optimized Performance</h3>
+<p><strong>- Keep High responsiveness in applications (Explorer, Offices, VS code) and full speed 4k30FPS video replaying while simutanously inferencing three traditional CV and one VLM/LLM models, plus camera and desktop video feeds displaying</strong></p>
+<ul>
+<li>Optimized application startup</li>
+<li>Lazy and asynchronous model loading</li>
+<li>Threading for UI responsiveness</li>
+<li>FPS control for video output</li>
+<li>Efficient frame capturing and buffering for video analysis</li>
+<li>Smart desktop content change detection</li>
+</ul>
+<h3 id="user-interface">User Interface</h3>
+<ul>
+<li>Dual-display interface for camera and desktop feeds</li>
+<li>Multiple camera and display support</li>
+<li>Configurable model selection and settings</li>
+<li>Meeting transcription and summary by using latest Qwen3 LLM model</li>
+<li>Continuous VLM inference mode with 20-second (configurable) intervals for either camera feeds or desktop feeds</li>
+<li>Progress indicators and status updates</li>
+<li>Inferencing and model loading KPIs in result.</li>
+</ul>
+<h2 id="installation">Installation</h2>
+<p>Given Intel office's network complexity and it is diffcult for end user to install all the required packages, we provide a pre-built package for Windows 10/11 users. Please follow the steps below to install the application:</p>
+<ol>
+<li>
+<p>Download MiniConda and install it:</p>
+</li>
+<li>
+<p>Copy the application folder to a desired location, say &lt;App_Dir&gt;.</p>
+</li>
+<li>
+<p>Unzip the hec_vc_ai folder to the envs folder of MiniConda.</p>
+</li>
+<li>
+<p>Create a subfolder 'models' in &lt;App_dir&gt;, Download required models:</p>
+<ul>
+<li>Place face detection models in <code>&lt;App_dir&gt;/models/cv/face-detection-retail-0004/</code></li>
+<li>Place emotion recognition models in <code>&lt;App_dir&gt;/models/cv/emotions-recognition-retail-0003/</code></li>
+<li>Place VLM models in <code>&lt;App_dir&gt;/models/vlm/</code> [Validted models: Qwen2.5-VL-3B, Qwen2.5-VL-7B]</li>
+<li>Place LLM models in <code>&lt;App_dir&gt;/models/llm/</code> [Validated models: Qwen3-1.7B]</li>
+</ul>
+</li>
+</ol>
+<h2 id="usage">Usage</h2>
+<h3 id="running-the-main-application">Running the Main Application</h3>
+<pre><code class="language-powershell">conda activate hec_vc_ai
+python hec_ai_workloads_sample.py
+</code></pre>
+<h3 id="running-virtual-camera-together-with-the-main-application">Running Virtual Camera together with the Main application</h3>
+<pre><code class="language-powershell"><span class="hljs-comment"># With webcam input</span>
+conda activate hec_vc_ai
+python vcam.py
+
+</code></pre>
+<pre><code class="language-powershell">python hec_ai_workloads_sample.py
+</code></pre>
+<h2 id="prerequisites">Prerequisites</h2>
+<h3 id="hardware-requirements">Hardware Requirements</h3>
+<ul>
+<li>Intel CPU with OpenVINO support</li>
+<li>Webcam (for camera input)</li>
+</ul>
+<h3 id="software-requirements">Software Requirements</h3>
+<pre><code>numpy&gt;=1.20.0
+Pillow&gt;=9.0.0
+opencv-python&gt;=4.5.0
+pywin32&gt;=228
+torch&gt;=2.0.0
+transformers&gt;=4.30.0
+optimum-intel&gt;=1.12.0
+openvino&gt;=2023.1.0
+modelscope&gt;=1.9.5
+pyvirtualcam&gt;=0.10.0
+</code></pre>
+<h2 id="application-components">Application Components</h2>
+<h3 id="1-main-application">1. Main Application</h3>
+<ul>
+<li>Provides main GUI interface</li>
+<li>Implements VLM and LLM processing</li>
+<li>Handles desktop capture and camera inputs</li>
+<li>Manages model loading and inference</li>
+</ul>
+<h3 id="2-virtual-camera-module-vcampy">2. Virtual Camera Module (<a href="http://vcam.py">vcam.py</a>)</h3>
+<ul>
+<li>Implements virtual camera functionality</li>
+<li>Handles face detection and emotion recognition</li>
+<li>Supports both webcam and video file inputs</li>
+<li>Maintains steady 30 FPS output</li>
+</ul>
+<h2 id="license">License</h2>
+<p>GNU GPL V3
+(Because of library it depends)</p>
+<h2 id="support">Support</h2>
+<p>For issues and feature requests, please talk to me directly.</p>
+
+            
+            
+        </body>
+        </html>

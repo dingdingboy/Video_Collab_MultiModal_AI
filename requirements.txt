@@ -1,0 +1,24 @@
+# Core dependencies
+numpy>=1.20.0
+Pillow>=9.0.0
+opencv-python>=4.5.0
+pywin32>=228; platform_system=="Windows"
+pyinstaller>=5.13.0  # For creating executables
+
+# GUI dependencies
+tk>=8.6.0  # Usually comes with Python installation
+tkinter  # Usually comes with Python installation
+
+# AI/ML dependencies
+torch>=2.0.0
+transformers>=4.30.0
+optimum-intel>=1.12.0
+openvino>=2023.1.0
+modelscope>=1.9.5
+
+# Virtual camera support
+pyvirtualcam>=0.10.0
+
+# Optional dependencies
+requests>=2.25.0  # For downloading videos
+decord>=0.6.0  # For video frame extraction
