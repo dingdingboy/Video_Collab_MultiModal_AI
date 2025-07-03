@@ -1,42 +1,22 @@
-# HEC AI Workloads Sample App
+# Multi-Modal AI Sample Application
 
-A comprehensive and optimization considered video analysis and text summarization sample application with camera and desktop video feeds VLM analysis, LLM-based meeting and class transcription analysis and summarization, integrates a virtual camera with features like auto framing, emotion recognition based on pipeline of multiple traditional CV algorithms.
+A comprehensive sample application with camera and desktop video feeds VLM analysis, LLM-based meeting and class transcription analysis and summarization, integrates a virtual camera with features like auto framing, emotion recognition based on pipeline of multiple traditional CV algorithms. This sample application features with multi-modal AI is optimized on Intel Core Ultra platform.
 
-This sample application can be used as a tool to simulate end to end multiple vertical use cases, now video collaboration workloads have been validated many times, other vercial use cases can also leverage this tool because it is more about models selection and prompt engineering. it can help us in engagement with our cusotmer to showcase the capacities of the selected IA SKU for design win, to introduce new AI use cases, and to be a candidate of reference implementation for our partners' AI application development on IA platform after required process accompolished.
-
-## UI of the application:
-![Application Screenshot](https://intel.sharepoint.com/:i:/s/IOTGRBHEChina/ETIEtZcGV1pCiGKC9eeQoywB_7hcoDudYt0fcKuHjBxoEw?e=Lp9qt7)
-
-## Demostration Videos:
-
-![Demo Videos](https://intel.sharepoint.com/:f:/s/IOTGRBHEChina/EncKyK_MmTlMjrVVAZhnykEBAAlefqGgP7Q6IqQ4ZN_G2A?e=77WBlT)
-
-### 1. Meeting Transcription Summarization:
-
-### 2. Behavior Analysis on Video Conferencing Attendee:
-
-### 3. Student Counting in Classroom:
-
-### 4. Complicated Workloads (Emotiona Analysis + Auto Framing + VLM Inferencing on Content Screen + 4K Video Playing + Web Browsing):
-
-### 5. Object Movement Analysis:
-
-### 6. Object Detection:
-
-### 7. Video Conferencing Sharing Content Analysis
+This sample application can be used as a tool to simulate end to end multiple vertical use cases, now video collaboration use case focused, other vercial use cases can also leverage this tool because that's more about models selection and prompt engineering.The application.
 
 
-## Performance Result
+![Overall UI](App_UI.png)
 
-| Metric        | ADL-225H   | MTL-125H   |
-| ------------- | ---------- | ---------- |
-| Qwen2.5-VL-3B | 3ms/token  | 6.4ms/token|
-| Qwen3-1.7B    | 15ms/token | 20ms/token |
+## Performance Results
+| Metric             | ADL-225H   | MTL-125H   |
+| ------------------ | ---------- | ---------- |
+| Qwen2.5-VL-3B-int4 | 3ms/token  | 6.4ms/token|
+| Qwen3-1.7B         | 15ms/token | 20ms/token |
 
 
 ## Use Cases
 
-### 1. A tool to simulate end to end workload with multiple AI features to showcase IA SKUs capaciies.
+### 1. A tool to simulate end to end workload with multiple AI features to evaluate their performance and accuracy in real use cases.
 
 - The tool supports to load different models and quantization settings, and key performance metrics along with inferencing result.
 
@@ -50,8 +30,8 @@ This sample application can be used as a tool to simulate end to end multiple ve
 ## Features
 
 ### Video Processing
-- Qwen3 VLMs inferencing support for both camera feeds and desktop sharing feeds (New model will be added)
-- Qwen3 LLM inferencing support for meeting transcript summarization (New model will be added)
+- Qwen3 VLMs inferencing support for both camera feeds and desktop sharing feeds
+- Qwen3 LLM inferencing support for meeting transcript summarization
 - Real-time face and person detection using OpenVINO optimized traditional CV models
 - Emotion recognition with 5 different emotion categories
 - Auto Framing and emotion recognition features in virtual camera
@@ -82,38 +62,34 @@ This sample application can be used as a tool to simulate end to end multiple ve
 
 ## Installation
 
-Given Intel office's network complexity and it is diffcult for end user to install all the required packages, we provide a pre-built package for Windows 10/11 users. Please follow the steps below to install the application:
+1. Download MiniConda and install it
+2. Download OBS and enable virutal camera in it if you like to run vcam.py alongwith AI4VideoCollab
 
-1. Download MiniConda and install it:
+3. Copy the application folder to a desired location, say <App_Dir>.
 
-2. Copy the application folder to a desired location, say <App_Dir>.
+4. Create a conda environment for the application, for example AI4VideoCollab, run pip install -r requirement.txt to install all dependencies.
 
-3. Unzip the hec_vc_ai folder to the envs folder of MiniConda.
-
-4. Create a subfolder 'models' in <App_dir>, Download required models:
+5. Create a subfolder 'models' in <App_dir>, Download required models:
    - Place face detection models in `<App_dir>/models/cv/face-detection-retail-0004/`
    - Place emotion recognition models in `<App_dir>/models/cv/emotions-recognition-retail-0003/`
-   - Place VLM models in `<App_dir>/models/vlm/` [Validted models: Qwen2.5-VL-3B, Qwen2.5-VL-7B]
+   - Place VLM models in `<App_dir>/models/vlm/` [Validted models: Qwen2.5-VL-3B-Int4, Qwen2.5-VL-7B-Int4]
    - Place LLM models in `<App_dir>/models/llm/` [Validated models: Qwen3-1.7B]
 
 ## Usage
 
 ### Running the Main Application
 ```powershell
-conda activate hec_vc_ai
-python hec_ai_workloads_sample.py
+conda activate AI4VideoCollab
+pip install -r requirements.txt
+python SimulatorStarter.py
 ```
 
 ### Running Virtual Camera together with the Main application
 ```powershell
 # With webcam input
-conda activate hec_vc_ai
+conda activate AI4VideoCollab
 python vcam.py
-
-```
-
-```powershell
-python hec_ai_workloads_sample.py
+python SimulatorStarter.py
 ```
 
 ## Prerequisites
@@ -154,8 +130,4 @@ pyvirtualcam>=0.10.0
 ## License
 
 GNU GPL V3
-(Because of library it depends)
 
-## Support
-
-For issues and feature requests, please talk to me directly.

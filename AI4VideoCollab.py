@@ -842,12 +842,6 @@ def get_available_cameras():
     return available_cameras
 
 if __name__ == "__main__":
-    import tkinter as tk
-    from tkinter import ttk, filedialog
-    from PIL import ImageTk
-    import cv2
-    import threading
-    
     root = tk.Tk()
     app = VideoPlayerApp(root)
     root.protocol("WM_DELETE_WINDOW", app.on_closing)

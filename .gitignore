@@ -19,7 +19,6 @@ models/
 *.cl_cache
 
 # Media files
-*.png
 *.jpg
 *.jpeg
 *.gif

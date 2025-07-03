@@ -2,7 +2,7 @@
         <html>
         <head>
             <meta charset="UTF-8">
-            <title>HEC AI Workloads Sample App</title>
+            <title>Multi-Modal AI Sample Application</title>
             <style>
 /* From extension vscode.github */
 /*---------------------------------------------------------------------------------------------
@@ -138,21 +138,11 @@
         
         </head>
         <body class="vscode-body vscode-light">
-            <h1 id="hec-ai-workloads-sample-app">HEC AI Workloads Sample App</h1>
-<p>A comprehensive and optimization considered video analysis and text summarization sample application with camera and desktop video feeds VLM analysis, LLM-based meeting and class transcription analysis and summarization, integrates a virtual camera with features like auto framing, emotion recognition based on pipeline of multiple traditional CV algorithms.</p>
-<p>This sample application can be used as a tool to simulate end to end multiple vertical use cases, now video collaboration workloads have been validated many times, other vercial use cases can also leverage this tool because it is more about models selection and prompt engineering. it can help us in engagement with our cusotmer to showcase the capacities of the selected IA SKU for design win, to introduce new AI use cases, and to be a candidate of reference implementation for our partners' AI application development on IA platform after required process accompolished.</p>
-<h2 id="ui-of-the-application">UI of the application:</h2>
-<p><img src="https://intel.sharepoint.com/:i:/s/IOTGRBHEChina/ETIEtZcGV1pCiGKC9eeQoywB_7hcoDudYt0fcKuHjBxoEw?e=Lp9qt7" alt="Application Screenshot"></p>
-<h2 id="demostration-videos">Demostration Videos:</h2>
-<p><img src="https://intel.sharepoint.com/:f:/s/IOTGRBHEChina/EncKyK_MmTlMjrVVAZhnykEBAAlefqGgP7Q6IqQ4ZN_G2A?e=77WBlT" alt="Demo Videos"></p>
-<h3 id="1-meeting-transcription-summarization">1. Meeting Transcription Summarization:</h3>
-<h3 id="2-behavior-analysis-on-video-conferencing-attendee">2. Behavior Analysis on Video Conferencing Attendee:</h3>
-<h3 id="3-student-counting-in-classroom">3. Student Counting in Classroom:</h3>
-<h3 id="4-complicated-workloads-emotiona-analysis--auto-framing--vlm-inferencing-on-content-screen--4k-video-playing--web-browsing">4. Complicated Workloads (Emotiona Analysis + Auto Framing + VLM Inferencing on Content Screen + 4K Video Playing + Web Browsing):</h3>
-<h3 id="5-object-movement-analysis">5. Object Movement Analysis:</h3>
-<h3 id="6-object-detection">6. Object Detection:</h3>
-<h3 id="7-video-conferencing-sharing-content-analysis">7. Video Conferencing Sharing Content Analysis</h3>
-<h2 id="performance-result">Performance Result</h2>
+            <h1 id="multi-modal-ai-sample-application">Multi-Modal AI Sample Application</h1>
+<p>A comprehensive sample application with camera and desktop video feeds VLM analysis, LLM-based meeting and class transcription analysis and summarization, integrates a virtual camera with features like auto framing, emotion recognition based on pipeline of multiple traditional CV algorithms. This sample application features with multi-modal AI is optimized on Intel Core Ultra platform.</p>
+<p>This sample application can be used as a tool to simulate end to end multiple vertical use cases, now video collaboration use case focused, other vercial use cases can also leverage this tool because that's more about models selection and prompt engineering.The application.</p>
+<p><img src="file:///c:\Users\test\source\repos\Video_Collab_MuliModal_AI\App_UI.png" alt="Overall UI"></p>
+<h2 id="performance-results">Performance Results</h2>
 <table>
 <thead>
 <tr>
@@ -163,7 +153,7 @@
 </thead>
 <tbody>
 <tr>
-<td>Qwen2.5-VL-3B</td>
+<td>Qwen2.5-VL-3B-int4</td>
 <td>3ms/token</td>
 <td>6.4ms/token</td>
 </tr>
@@ -175,7 +165,7 @@
 </tbody>
 </table>
 <h2 id="use-cases">Use Cases</h2>
-<h3 id="1-a-tool-to-simulate-end-to-end-workload-with-multiple-ai-features-to-showcase-ia-skus-capaciies">1. A tool to simulate end to end workload with multiple AI features to showcase IA SKUs capaciies.</h3>
+<h3 id="1-a-tool-to-simulate-end-to-end-workload-with-multiple-ai-features-to-evaluate-their-performance-and-accuracy-in-real-use-cases">1. A tool to simulate end to end workload with multiple AI features to evaluate their performance and accuracy in real use cases.</h3>
 <ul>
 <li>The tool supports to load different models and quantization settings, and key performance metrics along with inferencing result.</li>
 </ul>
@@ -190,8 +180,8 @@
 <h2 id="features">Features</h2>
 <h3 id="video-processing">Video Processing</h3>
 <ul>
-<li>Qwen3 VLMs inferencing support for both camera feeds and desktop sharing feeds (New model will be added)</li>
-<li>Qwen3 LLM inferencing support for meeting transcript summarization (New model will be added)</li>
+<li>Qwen3 VLMs inferencing support for both camera feeds and desktop sharing feeds</li>
+<li>Qwen3 LLM inferencing support for meeting transcript summarization</li>
 <li>Real-time face and person detection using OpenVINO optimized traditional CV models</li>
 <li>Emotion recognition with 5 different emotion categories</li>
 <li>Auto Framing and emotion recognition features in virtual camera</li>
@@ -220,39 +210,40 @@
 <li>Inferencing and model loading KPIs in result.</li>
 </ul>
 <h2 id="installation">Installation</h2>
-<p>Given Intel office's network complexity and it is diffcult for end user to install all the required packages, we provide a pre-built package for Windows 10/11 users. Please follow the steps below to install the application:</p>
 <ol>
 <li>
-<p>Download MiniConda and install it:</p>
+<p>Download MiniConda and install it</p>
+</li>
+<li>
+<p>Download OBS and enable virutal camera in it if you like to run <a href="http://vcam.py">vcam.py</a> alongwith AI4VideoCollab</p>
 </li>
 <li>
 <p>Copy the application folder to a desired location, say &lt;App_Dir&gt;.</p>
 </li>
 <li>
-<p>Unzip the hec_vc_ai folder to the envs folder of MiniConda.</p>
+<p>Create a conda environment for the application, for example AI4VideoCollab, run pip install -r requirement.txt to install all dependencies.</p>
 </li>
 <li>
 <p>Create a subfolder 'models' in &lt;App_dir&gt;, Download required models:</p>
 <ul>
 <li>Place face detection models in <code>&lt;App_dir&gt;/models/cv/face-detection-retail-0004/</code></li>
 <li>Place emotion recognition models in <code>&lt;App_dir&gt;/models/cv/emotions-recognition-retail-0003/</code></li>
-<li>Place VLM models in <code>&lt;App_dir&gt;/models/vlm/</code> [Validted models: Qwen2.5-VL-3B, Qwen2.5-VL-7B]</li>
+<li>Place VLM models in <code>&lt;App_dir&gt;/models/vlm/</code> [Validted models: Qwen2.5-VL-3B-Int4, Qwen2.5-VL-7B-Int4]</li>
 <li>Place LLM models in <code>&lt;App_dir&gt;/models/llm/</code> [Validated models: Qwen3-1.7B]</li>
 </ul>
 </li>
 </ol>
 <h2 id="usage">Usage</h2>
 <h3 id="running-the-main-application">Running the Main Application</h3>
-<pre><code class="language-powershell">conda activate hec_vc_ai
-python hec_ai_workloads_sample.py
+<pre><code class="language-powershell">conda activate AI4VideoCollab
+pip install <span class="hljs-literal">-r</span> requirements.txt
+python SimulatorStarter.py
 </code></pre>
 <h3 id="running-virtual-camera-together-with-the-main-application">Running Virtual Camera together with the Main application</h3>
 <pre><code class="language-powershell"><span class="hljs-comment"># With webcam input</span>
-conda activate hec_vc_ai
+conda activate AI4VideoCollab
 python vcam.py
-
-</code></pre>
-<pre><code class="language-powershell">python hec_ai_workloads_sample.py
+python SimulatorStarter.py
 </code></pre>
 <h2 id="prerequisites">Prerequisites</h2>
 <h3 id="hardware-requirements">Hardware Requirements</h3>
@@ -288,10 +279,7 @@ pyvirtualcam&gt;=0.10.0
 <li>Maintains steady 30 FPS output</li>
 </ul>
 <h2 id="license">License</h2>
-<p>GNU GPL V3
-(Because of library it depends)</p>
-<h2 id="support">Support</h2>
-<p>For issues and feature requests, please talk to me directly.</p>
+<p>GNU GPL V3</p>
 
             
             
