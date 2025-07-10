@@ -53,10 +53,14 @@ class LLMProcessor:
             sysprompt = sysprompt_en
         
         instruction = sysprompt + instruction
-        messages = [
-            {"role": "system", "content": instruction},
-            {"role": "user", "content": input_text}
-        ]
+
+        # Sometimes input_text is a string, sometimes a list of messages
+        if isinstance(input_text, str):
+            messages = [{"role": "system", "content": instruction}, {"role": "user", "content": input_text}]
+        elif isinstance(input_text, list):
+            messages = input_text
+        else:
+            raise ValueError("input_text must be a string or a list of messages")
 
         # Process input
         text = self.tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
@@ -74,7 +78,7 @@ class LLMProcessor:
 
         # Process output
         generated_ids = [output_ids[len(input_ids):] for input_ids, output_ids in zip(model_inputs.input_ids, generated_ids)]
-        response = self.tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
+        response = self.tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]        
         return response, len(model_inputs.input_ids[0]), len(generated_ids[0])
 
 if __name__ == "__main__":

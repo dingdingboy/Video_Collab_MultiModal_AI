@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
+from queue import Queue
 import sys
 import time
 import math
@@ -11,6 +12,8 @@ from tkinter import ttk, filedialog
 from PIL import ImageTk
 import cv2
 import threading
+import asyncio
+import mcp_chat
 
 # Import model handlers on demand to improve startup time
 ModelHandler = None
@@ -142,6 +145,8 @@ class VideoPlayerApp:
         self.buffer_size_camera_inference = 4  # # Number of capturing desktop frame for inferencing
         self.capture_camera_frame_num = 0 # Number of capturing camera frame for inferencing
         self.capture_desktop_frame_num = 0 # Number of capturing desktop frame for inferencing
+        self.isChatOn = False
+        self.mcp_user_message_queue = Queue()  # Queue to hold user messages for MCP chat
 
     def create_widgets(self):
         # Create main frame to hold both video displays
@@ -405,6 +410,73 @@ class VideoPlayerApp:
         # LLM Status Label
         self.llm_status_label = ttk.Label(self.root, text="")
         self.llm_status_label.pack(pady=5)
+                # --- MCP Chat Section ---
+        mcp_chat_frame = ttk.LabelFrame(self.root, text="MCP Chat")
+        mcp_chat_frame.pack(side=tk.BOTTOM, fill=tk.X, padx=10, pady=10)
+
+        # Chat display box with scrollbar
+        self.mcp_chat_text = tk.Text(mcp_chat_frame, height=8, wrap=tk.WORD, state=tk.DISABLED)
+        self.mcp_chat_text.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(0, 5))
+
+        mcp_chat_scrollbar = ttk.Scrollbar(mcp_chat_frame, command=self.mcp_chat_text.yview)
+        mcp_chat_scrollbar.pack(side=tk.LEFT, fill=tk.Y)
+        self.mcp_chat_text.config(yscrollcommand=mcp_chat_scrollbar.set)
+
+        # User input entry
+        self.mcp_user_input = ttk.Entry(mcp_chat_frame, width=60)
+        self.mcp_user_input.pack(side=tk.LEFT, padx=5, fill=tk.X, expand=True)
+
+        # Start MCP Chat button
+        self.mcp_chat_button = ttk.Button(mcp_chat_frame, text="Send", command=self.start_mcp_chat)
+        self.mcp_chat_button.pack(side=tk.LEFT, padx=5)
+
+
+    def start_mcp_chat(self):
+
+        user_message = self.mcp_user_input.get().strip()
+        if not user_message:
+            return
+        
+        # Check if the LLM model has been loaded or not.
+        if self.llm_processor is None or self.llm_processor.model is None:
+            self.mcp_chat_text.config(state=tk.NORMAL)
+            self.mcp_chat_text.insert(tk.END, f"MCP: Please load the LLM Model first!\n", "mcp")
+            self.mcp_chat_text.tag_configure("mcp", foreground="green")
+            self.mcp_chat_text.config(state=tk.DISABLED)
+            self.mcp_chat_text.see(tk.END)
+            return
+        
+        # Display user message in chat box
+        self.mcp_chat_text.config(state=tk.NORMAL)
+        self.mcp_chat_text.insert(tk.END, f"User: {user_message}\n", "user")
+        self.mcp_chat_text.tag_configure("user", foreground="blue")
+        self.mcp_chat_text.config(state=tk.DISABLED)
+        self.mcp_chat_text.see(tk.END)
+        self.mcp_user_input.delete(0, tk.END)
+        #self.mcp_user_input.config(state=tk.DISABLED)
+        #self.mcp_chat_button.config(state=tk.DISABLED)
+
+        def mcp_chat_callback(message):
+            # Called by mcp_chat thread with the response
+            self.mcp_chat_text.config(state=tk.NORMAL)
+            self.mcp_chat_text.insert(tk.END, f"MCP: {message}\n", "mcp")
+            self.mcp_chat_text.tag_configure("mcp", foreground="green")
+            self.mcp_chat_text.config(state=tk.DISABLED)
+            self.mcp_chat_text.see(tk.END)
+            self.mcp_user_input.config(state=tk.NORMAL)
+            self.mcp_chat_button.config(state=tk.NORMAL)
+
+        # Start the mcp_chat thread if not already running
+        def chat_thread():
+            # This will block and process messages from the queue
+            asyncio.run(mcp_chat.mcp_chat_start(self.llm_processor, self.mcp_user_message_queue, mcp_chat_callback))
+
+
+        self.mcp_user_message_queue.put(user_message)
+
+        if not self.isChatOn:
+            self.isChatOn = True
+            threading.Thread(target=chat_thread, daemon=True).start()
 
     def load_vlm_model_async(self):
         global ModelHandler
