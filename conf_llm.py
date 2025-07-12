@@ -83,7 +83,7 @@ class LLMProcessor:
 
 if __name__ == "__main__":
     # Example usage
-    model_path = r'C:\Users\test\source\models\Qwen3-1.7B'
+    model_path = r'.\models\Qwen3-1.7B'
     test_texts = {
         'instruction': "你是一个会议书记员，能够根据用户提问给出会议中的具体内容或者会议总结。",
         'input': "书记员，请给出下面的会议记录的总结，控制在30字以内：人物穿着蓝色衬衫，可能是一个员工或学生。桌子上的物品可能用于工作或学习，比如咖啡杯和水瓶。背景中的黑包和衣架可能表示这个人在工作或学习时的着装和物品。白板和磁铁可能用于展示或记录信息。荧光灯营造出明亮的环境，可能用于需要集中注意力的场合？"

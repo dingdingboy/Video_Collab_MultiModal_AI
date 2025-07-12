@@ -149,8 +149,27 @@ class VideoPlayerApp:
         self.mcp_user_message_queue = Queue()  # Queue to hold user messages for MCP chat
 
     def create_widgets(self):
+        # Create notebook (tabbed interface)
+        self.notebook = ttk.Notebook(self.root)
+        self.notebook.pack(fill=tk.BOTH, expand=True)
+
+        # --- Tab 1: Main Video/AI UI ---
+        self.tab_vlm = ttk.Frame(self.notebook)
+        self.notebook.add(self.tab_vlm, text="Video Analysis")
+
+        # --- Tab 2: Blank ---
+        self.tab_llm = ttk.Frame(self.notebook)
+        self.notebook.add(self.tab_llm, text="LLM Analysis")
+        # Make tab headers and titles larger
+        style = ttk.Style()
+        style.configure("TNotebook.Tab", font=("Arial", 16, "bold"), padding=[20, 10])
+        style.configure("TNotebook", tabposition='n')
+
+        # --- Place all your existing UI code inside self.tab1 instead of self.root ---
+        # Replace all "self.root" with "self.tab1" in widget parents below
+
         # Create main frame to hold both video displays
-        main_frame = ttk.Frame(self.root)
+        main_frame = ttk.Frame(self.tab_vlm)
         main_frame.pack(pady=10)
         
         # Create frames for each feed and its results
@@ -186,7 +205,7 @@ class VideoPlayerApp:
         self.camera_result_scrollbar = ttk.Scrollbar(camera_results_frame)
         self.camera_result_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 
-        self.camera_result_text = tk.Text(camera_results_frame, height=5, wrap=tk.WORD, yscrollcommand=self.camera_result_scrollbar.set)
+        self.camera_result_text = tk.Text(camera_results_frame, height=15, wrap=tk.WORD, yscrollcommand=self.camera_result_scrollbar.set)
         self.camera_result_text.pack(pady=5, padx=5, fill=tk.X, expand=True)
 
         # Configure the scrollbar
@@ -226,7 +245,7 @@ class VideoPlayerApp:
         self.desktop_result_scrollbar = ttk.Scrollbar(desktop_results_frame)
         self.desktop_result_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 
-        self.desktop_result_text = tk.Text(desktop_results_frame, height=5, wrap=tk.WORD, yscrollcommand=self.desktop_result_scrollbar.set)
+        self.desktop_result_text = tk.Text(desktop_results_frame, height=15, wrap=tk.WORD, yscrollcommand=self.desktop_result_scrollbar.set)
         self.desktop_result_text.pack(pady=5, padx=5, fill=tk.X, expand=True)
 
         # Configure the scrollbar
@@ -241,7 +260,7 @@ class VideoPlayerApp:
         self.desktop_result_text.bind("<Return>", autoscroll)
         
         # Inference controls
-        inference_frame = ttk.Frame(self.root)
+        inference_frame = ttk.Frame(self.tab_vlm)
         inference_frame.pack(pady=10, fill=tk.X, padx=10)
           # Model selection dropdown
         ttk.Label(inference_frame, text="Model:").pack(side=tk.LEFT, padx=5)
@@ -294,36 +313,43 @@ class VideoPlayerApp:
         self.status_load_vlm_model.pack(side=tk.LEFT, padx=5)
         
         # Prompt input in a new frame
-        prompt_frame = ttk.Frame(self.root)
+        prompt_frame = ttk.Frame(self.tab_vlm)
         prompt_frame.pack(pady=5, fill=tk.X, padx=10)
         ttk.Label(prompt_frame, text="Prompt:").pack(side=tk.LEFT)
-        self.prompt_entry = ttk.Entry(prompt_frame)
-        self.prompt_entry.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
+        self.prompt_text = tk.Text(prompt_frame, height=10, wrap=tk.WORD)
+        self.prompt_text.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
         
         # Run mode selection
-        ttk.Label(prompt_frame, text="Run Mode:").pack(side=tk.LEFT, padx=5)
+        vlm_infer_frame_holder = ttk.Frame(self.tab_vlm)
+        vlm_infer_frame_holder.pack(pady=5, fill=tk.X, padx=10)
+        vlm_infer_frame = ttk.Frame(vlm_infer_frame_holder)
+        vlm_infer_frame.pack(fill=tk.X, expand=True, padx=5)
+
+        # Center the controls horizontally using an internal frame
+        center_frame = ttk.Frame(vlm_infer_frame)
+        center_frame.pack(anchor="center")
+
+        ttk.Label(center_frame, text="Mode:").pack(side=tk.LEFT, padx=5)
         self.run_mode_var = tk.StringVar(value="Once")
-        self.run_mode_dropdown = ttk.Combobox(prompt_frame, textvariable=self.run_mode_var, 
-                                            values=["Once", "Every 20 seconds"], 
-                                            state="readonly", width=15)
+        self.run_mode_dropdown = ttk.Combobox(center_frame, textvariable=self.run_mode_var, 
+                              values=["Once", "Every 20 seconds"], 
+                              state="readonly", width=15)
         self.run_mode_dropdown.pack(side=tk.LEFT, padx=5)
-        
-        # Inference and Stop buttons
-        ttk.Button(prompt_frame, text="Run Inference", command=self.run_inference).pack(side=tk.LEFT, padx=5)
-        self.stop_inference_btn = ttk.Button(prompt_frame, text="Stop", command=self.stop_inference, state=tk.DISABLED)
+
+        ttk.Button(center_frame, text="Inference", command=self.run_inference).pack(side=tk.LEFT, padx=5)
+        self.stop_inference_btn = ttk.Button(center_frame, text="Stop", command=self.stop_inference, state=tk.DISABLED)
         self.stop_inference_btn.pack(side=tk.LEFT, padx=5)
+
+        vlm_infer_frame_holder.pack_configure(anchor="center")
         
         # Status label
-        self.status_label = ttk.Label(self.root, text="")
+        self.status_label = ttk.Label(self.tab_vlm, text="")
         self.status_label.pack(pady=5)
-        
-        # LLM controls
-        llm_frame = ttk.LabelFrame(self.root, text="LLM Section")
-        llm_frame.pack(pady=5, fill=tk.X, padx=10)
-        
+
         # Model selection controls
-        model_control_frame = ttk.Frame(llm_frame)
-        model_control_frame.pack(fill=tk.X, pady=5)
+        model_control_frame = ttk.LabelFrame(self.tab_llm, text="LLM Model Selection")
+        model_control_frame.pack(pady=20,fill=tk.X,padx=10)
+        
         
         # LLM Model dropdown
         ttk.Label(model_control_frame, text="LLM Model:").pack(side=tk.LEFT, padx=5)
@@ -349,7 +375,11 @@ class VideoPlayerApp:
         # Status label for LLM loading
         self.llm_status_load = ttk.Label(model_control_frame, text="")
         self.llm_status_load.pack(side=tk.LEFT, padx=5)
-        
+
+        # LLM controls
+        llm_frame = ttk.LabelFrame(self.tab_llm, text="Meeting Summarization")
+        llm_frame.pack(pady=5, fill=tk.X, padx=10)
+
         # LLM Instruction controls
         llm_instruction_frame = ttk.Frame(llm_frame)
         llm_instruction_frame.pack(fill=tk.X, pady=5)
@@ -369,32 +399,40 @@ class VideoPlayerApp:
         
         # LLM Input controls
         llm_input_frame = ttk.Frame(llm_frame)
-        llm_input_frame.pack(fill=tk.X, pady=5)
+        llm_input_frame.pack(fill=tk.X, pady=5,expand=True)
 
         # Input
         ttk.Label(llm_input_frame, text="Transcript:").pack(side=tk.LEFT, padx=5)
-        self.llm_input = tk.Text(llm_input_frame, height=4, wrap=tk.WORD)
-        self.llm_input.pack(side=tk.LEFT, padx=5, fill=tk.X, expand=True)
-        
-        # Inference button
-        self.llm_inference_button = ttk.Button(llm_input_frame, text="Inference", command=self.async_llm_inference)
-        self.llm_inference_button.pack(side=tk.LEFT, padx=5)
+        # Add a scrollbar for the LLM input text box
+        self.llm_input_scrollbar = ttk.Scrollbar(llm_input_frame)
+        self.llm_input_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 
-        # Output Text Box
-        self.llm_infer_output_label = ttk.Label(self.root, text="LLM Inference Output:")
-        self.llm_infer_output_label.pack(pady=5)
+        self.llm_input = tk.Text(llm_input_frame, height=20, wrap=tk.WORD, yscrollcommand=self.llm_input_scrollbar.set)
+        self.llm_input.pack(side=tk.LEFT, padx=5, fill=tk.X, expand=True)
+
+        self.llm_input_scrollbar.config(command=self.llm_input.yview)
+
+        # Inference button
+        llm_button_frame = ttk.Frame(llm_frame)
+        llm_button_frame.pack(fill=tk.X, pady=5,expand=True)
+        self.llm_inference_button = ttk.Button(llm_button_frame, text="Inference", command=self.async_llm_inference)
+        self.llm_inference_button.pack(pady=5)
+        llm_button_frame.pack_configure(anchor="center")
 
         # Create a frame to hold the text and scrollbar
-        text_frame = ttk.Frame(self.root)
-        text_frame.pack(pady=5, padx=10, fill=tk.BOTH, expand=True)
+        # Create a frame for LLM output, placed next to llm_input_frame
+        llm_output_frame = ttk.Frame(llm_frame)
+        llm_output_frame.pack(fill=tk.X, pady=5, expand=True)
+
 
         # Add a scrollbar
-        self.llm_infer_output_scrollbar = ttk.Scrollbar(text_frame)
+        self.llm_infer_output_scrollbar = ttk.Scrollbar(llm_output_frame)
         self.llm_infer_output_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 
+        ttk.Label(llm_output_frame, text="Summary:  ").pack(side=tk.LEFT, padx=5)
         # Create the text widget
-        self.llm_infer_output_text = tk.Text(text_frame, height=5, wrap=tk.WORD,
-                      yscrollcommand=self.llm_infer_output_scrollbar.set)
+        self.llm_infer_output_text = tk.Text(llm_output_frame, height=20, wrap=tk.WORD,
+                  yscrollcommand=self.llm_infer_output_scrollbar.set)
         self.llm_infer_output_text.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
         # Configure the scrollbar to scroll the text widget
@@ -407,28 +445,44 @@ class VideoPlayerApp:
         # Bind the autoscroll function to text changes
         self.llm_infer_output_text.bind("<Insert>", autoscroll)
         self.llm_infer_output_text.bind("<Return>", autoscroll)
+
         # LLM Status Label
-        self.llm_status_label = ttk.Label(self.root, text="")
+        self.llm_status_label = ttk.Label(self.tab_llm, text="")
         self.llm_status_label.pack(pady=5)
-                # --- MCP Chat Section ---
-        mcp_chat_frame = ttk.LabelFrame(self.root, text="MCP Chat")
-        mcp_chat_frame.pack(side=tk.BOTTOM, fill=tk.X, padx=10, pady=10)
+
+        # --- MCP Chat Section ---
+        mcp_chat_frame = ttk.LabelFrame(self.tab_llm, text="MCP Chat")
+        mcp_chat_frame.pack(pady=5, fill=tk.X, padx=10)
 
         # Chat display box with scrollbar
-        self.mcp_chat_text = tk.Text(mcp_chat_frame, height=8, wrap=tk.WORD, state=tk.DISABLED)
+        # Add a scrollbar for the MCP chat text box
+        mcp_chat_session_frame = ttk.Frame(mcp_chat_frame)
+        mcp_chat_session_frame.pack(fill=tk.X, pady=5, expand=True)
+
+        ttk.Label(mcp_chat_session_frame, text="Messages: ").pack(side=tk.LEFT, padx=5)
+        self.mcp_chat_scrollbar = ttk.Scrollbar(mcp_chat_session_frame)
+        self.mcp_chat_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+        self.mcp_chat_text = tk.Text(mcp_chat_session_frame, height=20, wrap=tk.WORD, state=tk.DISABLED, yscrollcommand=self.mcp_chat_scrollbar.set)
         self.mcp_chat_text.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(0, 5))
 
-        mcp_chat_scrollbar = ttk.Scrollbar(mcp_chat_frame, command=self.mcp_chat_text.yview)
-        mcp_chat_scrollbar.pack(side=tk.LEFT, fill=tk.Y)
-        self.mcp_chat_text.config(yscrollcommand=mcp_chat_scrollbar.set)
+        self.mcp_chat_scrollbar.config(command=self.mcp_chat_text.yview)
 
+        mcp_user_input_frame = ttk.Frame(mcp_chat_frame)
+        mcp_user_input_frame.pack(fill=tk.X, pady=5, expand=True)
         # User input entry
-        self.mcp_user_input = ttk.Entry(mcp_chat_frame, width=60)
-        self.mcp_user_input.pack(side=tk.LEFT, padx=5, fill=tk.X, expand=True)
+        ttk.Label(mcp_user_input_frame, text="User Input:").pack(side=tk.LEFT, padx=5)
+        self.mcp_user_input = ttk.Entry(mcp_user_input_frame, width=60)
+        # Bind Enter key to trigger MCP chat send
+        self.mcp_user_input.bind("<Return>", lambda event: self.start_mcp_chat())
+        self.mcp_user_input.pack(side=tk.LEFT, pady=5, padx=0, fill=tk.X, expand=True)
+        self.mcp_chat_button = ttk.Button(mcp_user_input_frame, text="Send", command=self.start_mcp_chat)
+        self.mcp_chat_button.pack(side=tk.LEFT,pady=5, padx=5)
 
         # Start MCP Chat button
-        self.mcp_chat_button = ttk.Button(mcp_chat_frame, text="Send", command=self.start_mcp_chat)
-        self.mcp_chat_button.pack(side=tk.LEFT, padx=5)
+        #mcp_user_input_button_frame = ttk.Frame(mcp_chat_frame)
+        #mcp_user_input_button_frame.pack(fill=tk.X, pady=5, expand=True)
+        #mcp_user_input_button_frame.pack_configure(anchor="center")
 
 
     def start_mcp_chat(self):
@@ -453,13 +507,13 @@ class VideoPlayerApp:
         self.mcp_chat_text.config(state=tk.DISABLED)
         self.mcp_chat_text.see(tk.END)
         self.mcp_user_input.delete(0, tk.END)
-        #self.mcp_user_input.config(state=tk.DISABLED)
-        #self.mcp_chat_button.config(state=tk.DISABLED)
+        self.mcp_user_input.config(state=tk.DISABLED)
+        self.mcp_chat_button.config(state=tk.DISABLED)
 
         def mcp_chat_callback(message):
             # Called by mcp_chat thread with the response
             self.mcp_chat_text.config(state=tk.NORMAL)
-            self.mcp_chat_text.insert(tk.END, f"MCP: {message}\n", "mcp")
+            self.mcp_chat_text.insert(tk.END, f"\nMCP: {message}\n", "mcp")
             self.mcp_chat_text.tag_configure("mcp", foreground="green")
             self.mcp_chat_text.config(state=tk.DISABLED)
             self.mcp_chat_text.see(tk.END)
@@ -470,7 +524,9 @@ class VideoPlayerApp:
         def chat_thread():
             # This will block and process messages from the queue
             asyncio.run(mcp_chat.mcp_chat_start(self.llm_processor, self.mcp_user_message_queue, mcp_chat_callback))
-
+            self.isChatOn = False
+            self.root.after(0, lambda: self.mcp_chat_text.config(state=tk.NORMAL))
+            self.root.after(0, lambda: self.mcp_chat_text.delete("1.0", tk.END))
 
         self.mcp_user_message_queue.put(user_message)
 
@@ -787,8 +843,8 @@ class VideoPlayerApp:
             self.status_label.config(text="Please start desktop capture first! ", foreground='red')
             return
         
-        prompt = self.prompt_entry.get()
-        if not prompt:
+        prompt = self.prompt_text.get("1.0", tk.END)
+        if not prompt or prompt== "\n":
             self.status_label.config(text="Please enter a prompt!", foreground='red')
             return
 

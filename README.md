@@ -1,6 +1,7 @@
-# Multi-Modal AI Sample Application
+# Multi-Modal AI Sample Application for Video Collaboration
 
-A comprehensive sample application with camera and desktop video feeds VLM analysis, LLM-based meeting and class transcription analysis and summarization, integrates a virtual camera with features like auto framing, emotion recognition based on pipeline of multiple traditional CV algorithms. This sample application features with multi-modal AI is optimized on Intel Core Ultra platform.
+A comprehensive sample application with camera and desktop video feeds VLM analysis, LLM-based meeting and class transcription analysis and summarization, as well as integration of MCP tools take the required actions based on the meeting transcript, such as action item generation, meeting minutes summarization, and action item prioritization. It can also integrates a virtual camera with features like auto framing, emotion recognition based on pipeline of multiple traditional CV algorithms. This sample application features supported by the latest multi-modal AI is optimized on Intel Core Ultra platform.
+
 
 This sample application can be used as a tool to simulate end to end multiple vertical use cases, now video collaboration use case focused, other vercial use cases can also leverage this tool because that's more about models selection and prompt engineering.The application.
 

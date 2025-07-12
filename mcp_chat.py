@@ -340,7 +340,7 @@ class LLMClient:
         try:
             start_time = time.time()
             
-            if self.llm_processor.load_model(r'C:\Users\test\source\repos\HEC_VC_AI\models\llm\Qwen3-1.7B'):
+            if self.llm_processor.load_model(r'.\models\llm\Qwen3-1.7B'):
                 end_time = time.time()
                 loading_time = end_time - start_time
                 self.model_loaded = True
@@ -464,6 +464,7 @@ class ChatSession:
                     user_input = self.user_msg_queue.get()
                     if user_input in ["quit", "exit"]:
                         logging.info("\nExiting...")
+                        self.mcp_chat_callback("\nExiting...")
                         break
 
                     messages.append({"role": "user", "content": user_input})
@@ -485,6 +486,8 @@ class ChatSession:
                         )
                     else:
                         messages.append({"role": "assistant", "content": llm_response})
+                        self.mcp_chat_callback(llm_response)
+                        
 
                 except KeyboardInterrupt:
                     logging.info("\nExiting...")
@@ -505,7 +508,7 @@ async def mcp_chat_start(llm_processor:LLMProcessor, user_message_queue, mcp_cha
     llm_client = LLMClient(config.llm_api_key, llm_processor)
     chat_session = ChatSession(servers, llm_client, user_message_queue, mcp_chat_callback)
     await chat_session.start()
-    return chat_session
+    mcp_chat_callback("\nChat session ended.")
 
 
 if __name__ == "__main__":
