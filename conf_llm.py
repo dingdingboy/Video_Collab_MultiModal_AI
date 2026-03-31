@@ -24,6 +24,11 @@ class LLMProcessor:
                 device=device,
                 config=AutoConfig.from_pretrained(llm_model_path),
             )
+            # Ensure _is_stateful exists for compatibility with new generation mixins
+            if not hasattr(self.model.__class__, '_is_stateful'):
+                setattr(self.model.__class__, '_is_stateful', False)
+            if not hasattr(self.model, '_is_stateful'):
+                self.model._is_stateful = False
             self.tokenizer = AutoTokenizer.from_pretrained(llm_model_path)
             return True
         except Exception as e:

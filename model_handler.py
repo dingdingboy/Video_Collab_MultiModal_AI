@@ -24,7 +24,12 @@ class ModelHandler:
                 st = time.perf_counter()
                 with self._lock:
                     print(f"Loading model from {quan_model_path} on {device}...")
-                    self.model = OVModelForVisualCausalLM.from_pretrained(quan_model_path, device=device)
+                    self.model = OVModelForVisualCausalLM.from_pretrained(quan_model_path, device=device, stateful=False)
+                    # Some versions of transformers/optimum expect a class-level _is_stateful flag.
+                    if not hasattr(self.model.__class__, '_is_stateful'):
+                        setattr(self.model.__class__, '_is_stateful', False)
+                    if not hasattr(self.model, '_is_stateful'):
+                        self.model._is_stateful = False
                     self.processor = AutoProcessor.from_pretrained(
                         quan_model_path, 
                         use_fast=True,  
@@ -78,6 +83,12 @@ class ModelHandler:
             return_tensors="pt"
         )
         
+        # Force _is_stateful attr for generation compatibility
+        if not hasattr(self.model.__class__, '_is_stateful'):
+            setattr(self.model.__class__, '_is_stateful', False)
+        if not hasattr(self.model, '_is_stateful'):
+            self.model._is_stateful = False
+
         st = time.perf_counter()
         output_ids = self.model.generate(**inputs, max_new_tokens=max_new_tokens)
         et = time.perf_counter()
